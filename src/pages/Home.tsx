@@ -144,9 +144,9 @@ function Home() {
           onChange={(value) => updateFilters({ keyword: value })}
         />
 
-        <div className="p-4 bg-github-darker border border-github-border rounded-xl">
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2">
+        <div className="p-3 sm:p-4 bg-github-darker border border-github-border rounded-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               {Object.entries(TIME_RANGES).map(([key, { label }]) => (
                 <button
                   key={key}
@@ -163,7 +163,7 @@ function Home() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 ml-auto">
+            <div className="flex items-center gap-2 sm:ml-auto">
               <label htmlFor="sort-select" className="sr-only">
                 Sort by
               </label>
@@ -171,7 +171,7 @@ function Home() {
                 id="sort-select"
                 value={sort.field}
                 onChange={(e) => setSort({ field: e.target.value as SortState['field'] })}
-                className="px-3 py-1.5 bg-github-dark border border-github-border rounded-lg text-sm text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent cursor-pointer"
+                className="flex-1 sm:flex-none px-3 py-1.5 bg-github-dark border border-github-border rounded-lg text-sm text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent cursor-pointer"
                 aria-label="Sort repositories by"
               >
                 {SORT_OPTIONS.map((option) => (
@@ -199,7 +199,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-github-border">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-github-border">
             <div ref={langPickerRef} className="relative">
               <button
                 onClick={() => setShowLanguagePicker(!showLanguagePicker)}
@@ -260,7 +260,7 @@ function Home() {
                 min={0}
                 value={filters.minStars || ''}
                 onChange={(e) => updateFilters({ minStars: parseInt(e.target.value) || 0 })}
-                className="w-20 px-2 py-1.5 bg-github-border border-0 rounded-lg text-sm text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent"
+                className="w-16 sm:w-20 px-2 py-1.5 bg-github-border border-0 rounded-lg text-sm text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent"
                 placeholder="0"
               />
             </div>
@@ -272,7 +272,8 @@ function Home() {
                 onChange={(e) => updateFilters({ includeArchived: e.target.checked })}
                 className="w-4 h-4 rounded border-github-border bg-github-border text-github-accent focus:ring-github-accent focus:ring-offset-0"
               />
-              <span className="text-sm text-github-muted">Include archived</span>
+              <span className="text-sm text-github-muted hidden sm:inline">Include archived</span>
+              <span className="text-sm text-github-muted sm:hidden">Archived</span>
             </label>
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -282,7 +283,8 @@ function Home() {
                 onChange={(e) => updateFilters({ includeForks: e.target.checked })}
                 className="w-4 h-4 rounded border-github-border bg-github-border text-github-accent focus:ring-github-accent focus:ring-offset-0"
               />
-              <span className="text-sm text-github-muted">Include forks</span>
+              <span className="text-sm text-github-muted hidden sm:inline">Include forks</span>
+              <span className="text-sm text-github-muted sm:hidden">Forks</span>
             </label>
 
             {activeFilterCount > 0 && (
@@ -295,7 +297,7 @@ function Home() {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-github-border">
+          <div className="flex flex-wrap items-center gap-2 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-github-border">
             <span className="text-sm text-github-muted mr-2">Topics:</span>
             {filters.topics.map((topic) => (
               <span
@@ -318,7 +320,7 @@ function Home() {
               onChange={(e) => setTopicInput(e.target.value)}
               onKeyDown={handleTopicAdd}
               placeholder="Add topic (Enter)"
-              className="px-2 py-1 bg-github-border border-0 rounded-lg text-sm text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent w-32"
+              className="px-2 py-1 bg-github-border border-0 rounded-lg text-sm text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent w-28 sm:w-32"
               aria-label="Add topic filter"
             />
           </div>
