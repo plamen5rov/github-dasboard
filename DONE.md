@@ -1,5 +1,10 @@
 # DONE.md — Changelog
 
+## Phase 3: State Management Hooks
+- [2025-05-07] Created `useFilters` hook: filter state synced with URL search params, update/reset functions, active filter count
+- [2025-05-07] Created `useSort` hook: sort state synced with URL, field/order setters, order toggle
+- [2025-05-07] Created `useRepos` hook: TanStack Query infinite scroll, combines filters + sort, exposes repos/totalCount/rateLimit
+
 ## Phase 2: Core Infrastructure
 - [2025-05-07] Created TypeScript types for GitHub REST + GraphQL responses (`src/types/github.ts`)
 - [2025-05-07] Created constants: time ranges, sort options, OSI licenses, API URLs (`src/lib/constants.ts`)
