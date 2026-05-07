@@ -1,5 +1,16 @@
 # DONE.md — Changelog
 
+## Phase 4 & 5: UI Components and Pages
+- [2025-05-07] Created LanguageBadge component with color-coded language dots
+- [2025-05-07] Created LicenseBadge component with Open Source / No License indicators
+- [2025-05-07] Created SearchInput component with 400ms debounce
+- [2025-05-07] Created SortControls component with field selector and order toggle
+- [2025-05-07] Created FilterBar component: time range, language picker, license dropdown, min stars, topic tags, archived/fork toggles
+- [2025-05-07] Created RepoCard component with full repo metadata, clickable topics, external links
+- [2025-05-07] Created RepoGrid component with responsive 1/2/3 column layout, infinite scroll via IntersectionObserver, skeleton loading, empty state
+- [2025-05-07] Built Home page: header with rate limit display, search, filters, sort, repo grid, error states with retry
+- [2025-05-07] Built Settings page: PAT input with save to localStorage, rate limit info table
+
 ## Phase 3: State Management Hooks
 - [2025-05-07] Created `useFilters` hook: filter state synced with URL search params, update/reset functions, active filter count
 - [2025-05-07] Created `useSort` hook: sort state synced with URL, field/order setters, order toggle
