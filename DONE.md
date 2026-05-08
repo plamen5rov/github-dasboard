@@ -60,6 +60,9 @@
 - [2026-05-08] Fixed "Open Source Only" returning no results — replaced AND-space-joined license list with client-side `license !== null` filter (GitHub REST API doesn't support `OR` between qualifiers) (files modified: utils.ts, github.ts, utils.test.ts)
 - [2026-05-08] Fixed "No license" returning API error — replaced invalid `license:null` qualifier with client-side `license === null` filter (files modified: utils.ts, github.ts, utils.test.ts)
 
+## Phase 21: Language Dropdown Arrow
+- [2026-05-08] Added chevron-down SVG arrow to Language button to visually indicate it's a dropdown (files modified: Home.tsx)
+
 ## Phase 17: Remove Dead Trend Alerts Feature
 - [2026-05-08] Removed `TrendAlert` interface from types/github.ts
 - [2026-05-08] Removed `alerts`/`alertThreshold` from `UserPreferences`

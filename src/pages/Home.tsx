@@ -303,6 +303,9 @@ function Home() {
                 }`}
               >
                 Language{filters.language.length > 0 ? ` (${filters.language.length})` : ''}
+                <svg className="w-3.5 h-3.5 inline-block ml-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
               {showLanguagePicker && (
                 <div className="absolute z-10 mt-2 p-3 bg-github-dark border border-github-border rounded-lg shadow-xl w-64 max-h-64 overflow-y-auto">
