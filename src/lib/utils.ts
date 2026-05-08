@@ -100,24 +100,6 @@ export function buildGitHubQuery(options: BuildQueryOptions): string {
     })
   }
 
-  if (options.developerFilters && options.developerFilters.length > 0) {
-    if (options.developerFilters.includes('good_first_issue')) {
-      parts.push('label:"good first issue"')
-    }
-    if (options.developerFilters.includes('ai_related')) {
-      parts.push('(topic:machine-learning topic:artificial-intelligence topic:deep-learning topic:llm topic:ai topic:generative-ai)')
-    }
-    if (options.developerFilters.includes('enterprise_grade')) {
-      parts.push('(topic:enterprise topic:kubernetes topic:docker topic:cloud-native topic:microservices)')
-    }
-    if (options.developerFilters.includes('lightweight')) {
-      parts.push('(topic:lightweight topic:minimal topic:zero-dependency topic:tiny topic:micro)')
-    }
-    if (options.developerFilters.includes('beginner_friendly')) {
-      parts.push('(topic:beginner-friendly topic:tutorial topic:learning topic:education)')
-    }
-  }
-
   if (!options.includeArchived) {
     parts.push('archived:false')
   }

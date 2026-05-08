@@ -44,12 +44,12 @@ function evaluateBeginnerFriendly(
   enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const hasBeginnerTopics = repo.topics.some((t) =>
-    ['beginner-friendly', 'tutorial', 'learning', 'education', 'examples'].includes(t),
+    ['beginner-friendly', 'tutorial', 'learning', 'education', 'examples', 'good-first-issue', 'beginner'].includes(t),
   )
-  const hasReadme = enrichment?.hasReadme ?? false
-  const lowComplexity = repo.stars < 5000 && repo.forks < 1000
+  const lowComplexity = repo.stars < 10000 && repo.forks < 2000
+  const hasOpenIssues = repo.openIssues > 0
 
-  const matches = hasBeginnerTopics || (hasReadme && lowComplexity)
+  const matches = hasBeginnerTopics || (lowComplexity && hasOpenIssues)
 
   return {
     matches,
@@ -62,13 +62,20 @@ function evaluateGoodFirstIssue(
   enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const goodFirstIssues = enrichment?.goodFirstIssueCount ?? 0
-  const matches = goodFirstIssues > 0
+  const hasGoodFirstTopic = repo.topics.some((t) =>
+    ['good-first-issue', 'beginner-friendly', 'hacktoberfest'].includes(t),
+  )
+  const hasOpenIssues = repo.openIssues > 2
+
+  const matches = goodFirstIssues > 0 || hasGoodFirstTopic || hasOpenIssues
 
   return {
     matches,
-    badge: matches
+    badge: goodFirstIssues > 0
       ? { label: `${goodFirstIssues} good first issues`, icon: '🎯', color: 'text-blue-400' }
-      : undefined,
+      : matches
+        ? { label: 'Has open issues', icon: '🎯', color: 'text-blue-400' }
+        : undefined,
   }
 }
 
@@ -82,12 +89,12 @@ function evaluateActivelyMaintained(
   const contributorCount = enrichment?.contributorCount ?? 0
   const recentCommitCount = enrichment?.recentCommitCount ?? 0
 
-  const matches = daysSincePush <= 7 && (contributorCount >= 2 || recentCommitCount >= 5)
+  const matches = daysSincePush <= 30 && (contributorCount >= 1 || recentCommitCount >= 1 || daysSincePush <= 7)
 
   return {
     matches,
     badge: matches
-      ? { label: 'Actively maintained', icon: '🔧', color: 'text-yellow-400' }
+      ? { label: daysSincePush <= 7 ? 'Active this week' : 'Active this month', icon: '🔧', color: 'text-yellow-400' }
       : undefined,
   }
 }
@@ -97,11 +104,11 @@ function evaluateSoloMaintained(
   enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const contributorCount = enrichment?.contributorCount ?? 1
-  const matches = contributorCount <= 2 && repo.stars > 100
+  const matches = contributorCount <= 3 && repo.stars > 50 && repo.stars < 5000
 
   return {
     matches,
-    badge: matches ? { label: 'Solo project', icon: '👤', color: 'text-purple-400' } : undefined,
+    badge: matches ? { label: 'Solo/small team', icon: '👤', color: 'text-purple-400' } : undefined,
   }
 }
 
@@ -111,10 +118,11 @@ function evaluateProductionReady(
 ): DeveloperFilterResult {
   const hasReleases = (enrichment?.releaseCount ?? 0) > 0
   const hasTests = enrichment?.hasTests ?? false
-  const isStable = repo.stars > 1000 && repo.forks > 100
+  const isStable = repo.stars > 500 && repo.forks > 50
   const hasLicense = repo.license !== null
+  const hasTopics = repo.topics.length > 0
 
-  const matches = hasLicense && isStable && (hasReleases || hasTests)
+  const matches = hasLicense && (isStable || hasTopics)
 
   return {
     matches,
@@ -140,15 +148,17 @@ function evaluateAIRelated(
       'ml',
       'generative-ai',
       'rag',
+      'chatgpt',
+      'openai',
     ].includes(t),
   )
   const aiDescription =
     repo.description &&
-    /machine learning|artificial intelligence|neural network|deep learning|llm|transformer|ai\s|ai\b|ml\s|ml\b/gi.test(
+    /machine learning|artificial intelligence|neural network|deep learning|llm|transformer|gpt|ai\s|ai\b|ml\s|ml\b|chatbot|agent/gi.test(
       repo.description,
     )
 
-  const matches = aiTopics.length > 0 || aiDescription
+  const matches = aiTopics.length > 0 || !!aiDescription
 
   return {
     matches,
@@ -161,9 +171,9 @@ function evaluateIndieProject(
   enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const indieTopics = repo.topics.filter((t) =>
-    ['indie', 'creative', 'art', 'game', 'music', 'pixel', 'fun', 'experimental', 'toy'].includes(t),
+    ['indie', 'creative', 'art', 'game', 'music', 'pixel', 'fun', 'experimental', 'toy', 'hobby', 'personal'].includes(t),
   )
-  const smallProject = repo.stars < 2000 && repo.forks < 200
+  const smallProject = repo.stars < 5000 && repo.forks < 500
   const contributorCount = enrichment?.contributorCount ?? 1
   const isSolo = contributorCount <= 3
 
@@ -182,15 +192,15 @@ function evaluateNewExploding(
   const repoAge = Math.floor(
     (Date.now() - new Date(repo.createdAt).getTime()) / (1000 * 60 * 60 * 24),
   )
-  const isNew = repoAge <= 90
+  const isNew = repoAge <= 180
   const growth = repo.growth
-  const isExploding = growth && (growth.starsThisWeek > 50 || growth.momentumScore > 70)
+  const isExploding = growth && (growth.starsThisWeek > 10 || growth.momentumScore > 40)
 
-  const matches = isNew && isExploding
+  const matches = (isNew && isExploding) || (isNew && repo.stars > 100)
 
   return {
     matches,
-    badge: matches ? { label: 'New & exploding', icon: '💥', color: 'text-orange-400' } : undefined,
+    badge: matches ? { label: isNew && isExploding ? 'New & exploding' : 'Recently created', icon: '💥', color: 'text-orange-400' } : undefined,
   }
 }
 
@@ -198,16 +208,16 @@ function evaluateLowCompetition(
   repo: RepositoryWithIntelligence,
   enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
-  const isUndiscovered = repo.stars > 50 && repo.stars < 500
+  const isUndiscovered = repo.stars > 30 && repo.stars < 1000
   const hasGoodQuality = repo.license !== null && repo.archived === false
   const growth = repo.growth
-  const isGrowing = growth && growth.velocity > 0.5
+  const isGrowing = growth && growth.velocity > 0.1
 
-  const matches = isUndiscovered && hasGoodQuality && isGrowing
+  const matches = isUndiscovered && hasGoodQuality && (isGrowing || repo.forks > 5)
 
   return {
     matches,
-    badge: matches ? { label: 'Low competition gem', icon: '💎', color: 'text-indigo-400' } : undefined,
+    badge: matches ? { label: 'Undiscovered gem', icon: '💎', color: 'text-indigo-400' } : undefined,
   }
 }
 
@@ -229,13 +239,14 @@ function evaluateEnterpriseGrade(
       'devops',
     ].includes(t),
   )
-  const isLarge = repo.stars > 5000 && repo.forks > 1000
-  const hasManyContributors = (enrichment?.contributorCount ?? 0) > 10
-  const hasReleases = (enrichment?.releaseCount ?? 0) > 5
+  const isLarge = repo.stars > 1000 && repo.forks > 200
+  const hasManyContributors = (enrichment?.contributorCount ?? 0) > 5
+  const hasReleases = (enrichment?.releaseCount ?? 0) > 2
 
   const matches =
     (enterpriseTopics.length > 0 && isLarge) ||
-    (hasManyContributors && hasReleases && isLarge)
+    (hasManyContributors && hasReleases) ||
+    (isLarge && repo.topics.length > 3)
 
   return {
     matches,
@@ -248,15 +259,18 @@ function evaluateLightweight(
   enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const lightweightTopics = repo.topics.filter((t) =>
-    ['lightweight', 'minimal', 'zero-dependency', 'no-dependencies', 'tiny', 'micro', 'fast'].includes(t),
+    ['lightweight', 'minimal', 'zero-dependency', 'no-dependencies', 'tiny', 'micro', 'fast', 'simple', 'small'].includes(t),
   )
-  const isSmall = repo.stars < 10000
-  const hasFewDependencies = enrichment?.dependencyCount !== undefined && enrichment.dependencyCount < 5
+  const isSmall = repo.stars < 20000
 
-  const matches = lightweightTopics.length > 0 || (isSmall && hasFewDependencies)
+  const matches = lightweightTopics.length > 0 || isSmall
 
   return {
     matches,
-    badge: matches ? { label: 'Lightweight', icon: '🪶', color: 'text-teal-400' } : undefined,
+    badge: lightweightTopics.length > 0
+      ? { label: 'Lightweight', icon: '🪶', color: 'text-teal-400' }
+      : matches
+        ? { label: 'Small project', icon: '🪶', color: 'text-teal-400' }
+        : undefined,
   }
 }

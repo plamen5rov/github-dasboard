@@ -383,21 +383,18 @@ export async function fetchReposWithIntelligence(
         growth: intelligence.get(repo.fullName),
       }))
 
-      let developerEnrichmentMap = new Map<string, GraphQLRepositoryEnrichment>()
+      let filteredRepos = reposWithIntelligence
       if (options.developerFilters && options.developerFilters.length > 0) {
+        const developerFilters = options.developerFilters as DeveloperFilter[]
         try {
           developerEnrichmentMap = await enrichWithDeveloperData(fullNames)
         } catch {
           // Developer data enrichment failed, continue without it
         }
-      }
 
-      let filteredRepos = reposWithIntelligence
-      if (options.developerFilters && options.developerFilters.length > 0) {
-        const developerFilters = options.developerFilters as DeveloperFilter[]
         filteredRepos = reposWithIntelligence.filter((repo) => {
           const enrichment = developerEnrichmentMap.get(repo.fullName)
-          return developerFilters.every((filter) => {
+          return developerFilters.some((filter) => {
             const result = evaluateDeveloperFilter(filter, repo, enrichment)
             return result.matches
           })

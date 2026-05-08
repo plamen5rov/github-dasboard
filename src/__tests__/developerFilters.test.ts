@@ -63,7 +63,7 @@ describe('evaluateDeveloperFilter', () => {
     })
 
     it('does not match repos without beginner signals', () => {
-      const repo = createMockRepo()
+      const repo = createMockRepo({ stars: 50000, forks: 10000, openIssues: 0 })
       const result = evaluateDeveloperFilter('beginner_friendly', repo)
       expect(result.matches).toBe(false)
     })
@@ -79,7 +79,7 @@ describe('evaluateDeveloperFilter', () => {
     })
 
     it('does not match repos without good first issues', () => {
-      const repo = createMockRepo()
+      const repo = createMockRepo({ openIssues: 0 })
       const result = evaluateDeveloperFilter('good_first_issue', repo)
       expect(result.matches).toBe(false)
     })
@@ -234,7 +234,7 @@ describe('evaluateDeveloperFilter', () => {
     })
 
     it('does not match repos without lightweight signals', () => {
-      const repo = createMockRepo()
+      const repo = createMockRepo({ stars: 50000 })
       const result = evaluateDeveloperFilter('lightweight', repo)
       expect(result.matches).toBe(false)
     })
