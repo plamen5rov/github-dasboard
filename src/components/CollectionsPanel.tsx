@@ -13,7 +13,7 @@ interface CollectionsPanelProps {
 }
 
 function CollectionsPanel({ isOpen, onClose, onTopicClick }: CollectionsPanelProps) {
-  const { prefs, addCollection, deleteCollection, addToCollection, removeFromCollection } = usePersonalization()
+  const { prefs, addCollection, deleteCollection, removeFromCollection } = usePersonalization()
   const [newName, setNewName] = useState('')
   const [newDescription, setNewDescription] = useState('')
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -237,7 +237,7 @@ function CollectionsPanel({ isOpen, onClose, onTopicClick }: CollectionsPanelPro
                                     <>
                                       <div className="flex flex-wrap items-center gap-1.5 mt-2">
                                         <LanguageBadge language={repo.language} color={repo.languageColor} />
-                                        <LicenseBadge spdxId={repo.license?.spdxId || null} name={repo.license?.name || null} />
+                                        <LicenseBadge spdxId={repo.license?.spdxId || null} />
                                       </div>
 
                                       <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-github-muted">

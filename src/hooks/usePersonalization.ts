@@ -1,8 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
-import type { UserPreferences, Collection, Watchlist, TrendAlert } from '../types/github'
+import type { UserPreferences, TrendAlert } from '../types/github'
 import {
   loadPreferences,
-  savePreferences,
   toggleBookmark as toggleBookmarkFn,
   isBookmarked as isBookmarkedFn,
   addCollection as addCollectionFn,

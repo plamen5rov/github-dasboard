@@ -2,7 +2,6 @@ import { isOSILicense } from '../lib/utils'
 
 interface LicenseBadgeProps {
   spdxId: string | null
-  name: string | null
 }
 
 function LicenseBadge({ spdxId }: LicenseBadgeProps) {

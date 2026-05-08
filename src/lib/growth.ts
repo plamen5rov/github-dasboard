@@ -1,4 +1,4 @@
-import { parseISO, differenceInDays, differenceInHours, subDays, subHours } from 'date-fns'
+import { parseISO, differenceInDays, differenceInHours } from 'date-fns'
 import type { StarTimelineEntry, GrowthMetrics } from '../types/github'
 
 export function calculateGrowthMetrics(

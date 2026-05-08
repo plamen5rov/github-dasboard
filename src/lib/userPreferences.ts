@@ -1,4 +1,4 @@
-import type { UserPreferences, Bookmark, Collection, Watchlist, TrendAlert } from '../types/github'
+import type { UserPreferences, Collection, Watchlist, TrendAlert } from '../types/github'
 
 const STORAGE_KEY = 'github_dashboard_preferences'
 

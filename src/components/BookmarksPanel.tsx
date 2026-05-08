@@ -133,7 +133,7 @@ function BookmarksPanel({ isOpen, onClose, onTopicClick }: BookmarksPanelProps) 
                       <>
                         <div className="flex flex-wrap items-center gap-2 mt-2">
                           <LanguageBadge language={repo.language} color={repo.languageColor} />
-                          <LicenseBadge spdxId={repo.license?.spdxId || null} name={repo.license?.name || null} />
+                          <LicenseBadge spdxId={repo.license?.spdxId || null} />
                         </div>
 
                         <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-github-muted">

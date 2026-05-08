@@ -136,7 +136,7 @@ function RepoCard({ repo, onTopicClick, activeDeveloperFilters = [] }: RepoCardP
 
       <div className="flex flex-wrap items-center gap-2 mb-3">
         <LanguageBadge language={repo.language} color={repo.languageColor} />
-        <LicenseBadge spdxId={repo.license?.spdxId || null} name={repo.license?.name || null} />
+        <LicenseBadge spdxId={repo.license?.spdxId || null} />
       </div>
 
       {developerBadges.length > 0 && (

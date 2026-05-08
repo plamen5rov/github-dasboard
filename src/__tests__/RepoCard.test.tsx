@@ -16,6 +16,7 @@ const mockRepo: Repository = {
   openPRs: 5,
   pushedAt: '2025-01-01T00:00:00Z',
   updatedAt: '2025-01-01T00:00:00Z',
+  createdAt: '2025-01-01T00:00:00Z',
   language: 'TypeScript',
   languageColor: '#3178c6',
   license: { spdxId: 'MIT', name: 'MIT License' },

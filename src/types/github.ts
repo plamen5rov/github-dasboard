@@ -10,11 +10,6 @@ export interface GitHubLicense {
   url: string | null
 }
 
-export interface GitHubLanguage {
-  name: string
-  color: string | null
-}
-
 export interface GitHubRepositoryREST {
   id: number
   name: string
@@ -34,40 +29,6 @@ export interface GitHubRepositoryREST {
   archived: boolean
   fork: boolean
   default_branch: string
-}
-
-export interface GraphQLRepository {
-  name: string
-  owner: {
-    login: string
-    avatarUrl: string
-  }
-  description: string | null
-  stargazerCount: number
-  forkCount: number
-  primaryLanguage: {
-    name: string
-    color: string | null
-  } | null
-  licenseInfo: {
-    spdxId: string
-    name: string
-  } | null
-  pullRequests: {
-    totalCount: number
-  }
-  issues: {
-    totalCount: number
-  }
-  pushedAt: string
-  url: string
-}
-
-export interface GraphQLSearchResponse {
-  search: {
-    nodes: GraphQLRepository[]
-    issueCount: number
-  }
 }
 
 export interface Repository {

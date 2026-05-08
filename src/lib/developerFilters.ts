@@ -1,7 +1,7 @@
 import type { RepositoryWithIntelligence, GraphQLRepositoryEnrichment } from '../types/github'
 import type { DeveloperFilter } from '../hooks/useFilters'
 
-export interface DeveloperFilterResult {
+interface DeveloperFilterResult {
   matches: boolean
   badge?: { label: string; icon: string; color: string }
 }
@@ -13,27 +13,27 @@ export function evaluateDeveloperFilter(
 ): DeveloperFilterResult {
   switch (filter) {
     case 'beginner_friendly':
-      return evaluateBeginnerFriendly(repo, enrichment)
-    case 'good_first_issue':
+      return evaluateBeginnerFriendly(repo)
+      case 'good_first_issue':
       return evaluateGoodFirstIssue(repo, enrichment)
-    case 'actively_maintained':
+      case 'actively_maintained':
       return evaluateActivelyMaintained(repo, enrichment)
-    case 'solo_maintained':
+      case 'solo_maintained':
       return evaluateSoloMaintained(repo, enrichment)
-    case 'production_ready':
-      return evaluateProductionReady(repo, enrichment)
-    case 'ai_related':
-      return evaluateAIRelated(repo, enrichment)
-    case 'indie_project':
+      case 'production_ready':
+      return evaluateProductionReady(repo)
+      case 'ai_related':
+      return evaluateAIRelated(repo)
+      case 'indie_project':
       return evaluateIndieProject(repo, enrichment)
-    case 'new_exploding':
-      return evaluateNewExploding(repo, enrichment)
-    case 'low_competition':
-      return evaluateLowCompetition(repo, enrichment)
-    case 'enterprise_grade':
+      case 'new_exploding':
+      return evaluateNewExploding(repo)
+      case 'low_competition':
+      return evaluateLowCompetition(repo)
+      case 'enterprise_grade':
       return evaluateEnterpriseGrade(repo, enrichment)
-    case 'lightweight':
-      return evaluateLightweight(repo, enrichment)
+      case 'lightweight':
+      return evaluateLightweight(repo)
     default:
       return { matches: true }
   }
@@ -41,7 +41,6 @@ export function evaluateDeveloperFilter(
 
 function evaluateBeginnerFriendly(
   repo: RepositoryWithIntelligence,
-  enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const hasBeginnerTopics = repo.topics.some((t) =>
     ['beginner-friendly', 'tutorial', 'learning', 'education', 'examples', 'good-first-issue', 'beginner'].includes(t),
@@ -114,10 +113,7 @@ function evaluateSoloMaintained(
 
 function evaluateProductionReady(
   repo: RepositoryWithIntelligence,
-  enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
-  const hasReleases = (enrichment?.releaseCount ?? 0) > 0
-  const hasTests = enrichment?.hasTests ?? false
   const isStable = repo.stars > 500 && repo.forks > 50
   const hasLicense = repo.license !== null
   const hasTopics = repo.topics.length > 0
@@ -132,7 +128,6 @@ function evaluateProductionReady(
 
 function evaluateAIRelated(
   repo: RepositoryWithIntelligence,
-  enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const aiTopics = repo.topics.filter((t) =>
     [
@@ -187,7 +182,6 @@ function evaluateIndieProject(
 
 function evaluateNewExploding(
   repo: RepositoryWithIntelligence,
-  enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const repoAge = Math.floor(
     (Date.now() - new Date(repo.createdAt).getTime()) / (1000 * 60 * 60 * 24),
@@ -206,7 +200,6 @@ function evaluateNewExploding(
 
 function evaluateLowCompetition(
   repo: RepositoryWithIntelligence,
-  enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const isUndiscovered = repo.stars > 30 && repo.stars < 1000
   const hasGoodQuality = repo.license !== null && repo.archived === false
@@ -256,7 +249,6 @@ function evaluateEnterpriseGrade(
 
 function evaluateLightweight(
   repo: RepositoryWithIntelligence,
-  enrichment?: GraphQLRepositoryEnrichment,
 ): DeveloperFilterResult {
   const lightweightTopics = repo.topics.filter((t) =>
     ['lightweight', 'minimal', 'zero-dependency', 'no-dependencies', 'tiny', 'micro', 'fast', 'simple', 'small'].includes(t),

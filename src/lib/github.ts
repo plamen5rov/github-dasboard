@@ -87,7 +87,7 @@ function normalizeRepo(rest: GitHubRepositoryREST): Repository {
   }
 }
 
-export async function searchRepositories(
+async function searchRepositories(
   options: BuildQueryOptions,
   sort: SortField,
   order: SortOrder,
@@ -123,7 +123,7 @@ export async function searchRepositories(
   return { repos, totalCount: data.total_count || 0, rateLimit }
 }
 
-export async function enrichWithGraphQL(
+async function enrichWithGraphQL(
   repoNames: string[],
 ): Promise<Map<string, { openPRs: number; openIssues: number; languageColor: string | null }>> {
   if (repoNames.length === 0) return new Map()
@@ -173,7 +173,7 @@ export async function enrichWithGraphQL(
   return result
 }
 
-export async function enrichWithDeveloperData(
+async function enrichWithDeveloperData(
   repoNames: string[],
 ): Promise<Map<string, import('../types/github').GraphQLRepositoryEnrichment>> {
   if (repoNames.length === 0) return new Map()
@@ -297,38 +297,6 @@ async function enrichWithReadmeText(
   return result
 }
 
-export async function fetchRepos(
-  options: BuildQueryOptions,
-  sort: SortField,
-  order: SortOrder,
-  page: number = 1,
-): Promise<{ repos: Repository[]; totalCount: number; rateLimit: RateLimitInfo }> {
-  const { repos, totalCount, rateLimit } = await searchRepositories(options, sort, order, page)
-
-  const token = getToken()
-  if (token && repos.length > 0) {
-    const fullNameMap = new Map(repos.map((r) => [r.fullName, r]))
-    const fullNames = Array.from(fullNameMap.keys())
-
-    try {
-      const enriched = await enrichWithGraphQL(fullNames)
-      repos.forEach((repo) => {
-        const extra = enriched.get(repo.fullName)
-        if (extra) {
-          repo.openPRs = extra.openPRs
-          repo.languageColor = extra.languageColor
-        }
-      })
-    } catch {
-      // GraphQL enrichment failed, continue with REST data
-    }
-  }
-
-  return { repos, totalCount, rateLimit }
-}
-
-export { extractRateLimit }
-
 export async function fetchRepoByFullName(fullName: string): Promise<RepositoryWithIntelligence | null> {
   const [owner, name] = fullName.split('/')
   const url = `${GITHUB_API_BASE}/repos/${owner}/${name}`
@@ -400,7 +368,7 @@ async function fetchStarTimeline(fullName: string): Promise<StarTimelineEntry[]>
   return timeline
 }
 
-export async function enrichWithIntelligence(
+async function enrichWithIntelligence(
   repos: Repository[],
 ): Promise<Map<string, GrowthMetrics>> {
   const result = new Map<string, GrowthMetrics>()
@@ -446,7 +414,7 @@ export async function fetchReposWithIntelligence(
     }
   }
 
-  const { repos, totalCount, rateLimit } = await searchRepositories(options, sort, order, page)
+  const { repos, rateLimit } = await searchRepositories(options, sort, order, page)
 
   const filteredRepos = repos.filter((repo) => {
     if (prefs.ignoredTopics && prefs.ignoredTopics.length > 0) {

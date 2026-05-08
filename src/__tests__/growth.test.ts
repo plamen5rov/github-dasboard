@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { calculateGrowthMetrics, getTrendEmoji, getTrendLabel } from '../lib/growth'
-import { formatDistanceToNow, parseISO, subDays, subHours } from 'date-fns'
+import { subDays, subHours } from 'date-fns'
 
 describe('calculateGrowthMetrics', () => {
   const now = new Date()

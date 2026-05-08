@@ -17,33 +17,6 @@ export const SORT_OPTIONS: { field: SortField; label: string; icon: string }[] =
   { field: 'updated', label: 'Recently Updated', icon: '🕐' },
 ] as const
 
-export const OSI_APPROVED_LICENSES = [
-  'MIT',
-  'Apache-2.0',
-  'GPL-2.0',
-  'GPL-3.0',
-  'LGPL-2.1',
-  'LGPL-3.0',
-  'MPL-2.0',
-  'BSD-2-Clause',
-  'BSD-3-Clause',
-  'ISC',
-  'Unlicense',
-  'CC0-1.0',
-  'BSL-1.0',
-  'Zlib',
-  'Artistic-2.0',
-  'EPL-1.0',
-  'EPL-2.0',
-  'AGPL-3.0',
-  'EUPL-1.1',
-  'EUPL-1.2',
-  'OFL-1.1',
-  'WTFPL',
-  '0BSD',
-  'BlueOak-1.0.0',
-] as const
-
 export const COMMON_LICENSES = [
   'MIT',
   'Apache-2.0',
@@ -79,4 +52,4 @@ export const DEVELOPER_FILTERS = {
   lightweight: { label: 'Lightweight', icon: '🪶', description: 'Small footprint, minimal dependencies' },
 } as const
 
-export type DeveloperFilterKey = keyof typeof DEVELOPER_FILTERS
+
