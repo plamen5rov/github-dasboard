@@ -1,5 +1,18 @@
 # DONE.md — Changelog
 
+## Phase 12: GitHub User Personalization
+- [2026-05-08] Added personalization types: Bookmark, Collection, Watchlist, TrendAlert, UserPreferences
+- [2026-05-08] Created userPreferences.ts for localStorage persistence with full CRUD API
+- [2026-05-08] Created usePersonalization hook with reactive state management
+- [2026-05-08] Added bookmark button to RepoCard (filled star icon when bookmarked)
+- [2026-05-08] Built CollectionsPanel modal for creating/managing repo collections
+- [2026-05-08] Built FollowedTopicsManager modal for topic following/unfollowing
+- [2026-05-08] Built IgnoreListManager modal for ignoring topics and languages
+- [2026-05-08] Built TrendAlerts notification system with read/unread states
+- [2026-05-08] Integrated ignored topics/languages into GitHub API query filtering
+- [2026-05-08] Added personalization icons to header: collections, topics, ignore list, alerts bell with unread badge
+- [2026-05-08] 73 tests passing
+
 ## Phase 11: Developer-Centric Filters
 - [2026-05-08] Added 11 developer-centric filter types: beginner_friendly, good_first_issue, actively_maintained, solo_maintained, production_ready, ai_related, indie_project, new_exploding, low_competition, enterprise_grade, lightweight
 - [2026-05-08] Created `developerFilters.ts` with detection logic for each filter using repo metadata, topics, descriptions, and GraphQL enrichment data

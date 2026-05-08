@@ -14,6 +14,7 @@ import { buildGitHubQuery, getAPISortField } from './utils'
 import { calculateGrowthMetrics } from './growth'
 import { evaluateDeveloperFilter } from './developerFilters'
 import type { DeveloperFilter } from '../hooks/useFilters'
+import { loadPreferences } from './userPreferences'
 
 function getToken(): string | null {
   return localStorage.getItem('github_token') || import.meta.env.VITE_GITHUB_TOKEN || null
@@ -356,21 +357,83 @@ export async function fetchReposWithIntelligence(
   order: SortOrder,
   page: number = 1,
 ): Promise<{ repos: RepositoryWithIntelligence[]; totalCount: number; rateLimit: RateLimitInfo }> {
+  const prefs = loadPreferences()
+
+  if (prefs.ignoredLanguages && prefs.ignoredLanguages.length > 0) {
+    const ignoredLangs = prefs.ignoredLanguages.map((l) => `language:${l.toLowerCase()}`).join(' ')
+    if (options.keyword) {
+      options.keyword = `${options.keyword} -(${ignoredLangs})`
+    } else {
+      options.keyword = `-(${ignoredLangs})`
+    }
+  }
+
   const { repos, totalCount, rateLimit } = await searchRepositories(options, sort, order, page)
 
+  const filteredRepos = repos.filter((repo) => {
+    if (prefs.ignoredTopics && prefs.ignoredTopics.length > 0) {
+      const hasIgnoredTopic = repo.topics.some((t) =>
+        prefs.ignoredTopics.includes(t.toLowerCase()),
+      )
+      if (hasIgnoredTopic) return false
+    }
+    return true
+  })
+
   const token = getToken()
-  if (token && repos.length > 0) {
-    const fullNameMap = new Map(repos.map((r) => [r.fullName, r]))
+  if (token && filteredRepos.length > 0) {
+    const fullNameMap = new Map(filteredRepos.map((r) => [r.fullName, r]))
     const fullNames = Array.from(fullNameMap.keys())
 
     try {
       const enriched = await enrichWithGraphQL(fullNames)
-      repos.forEach((repo) => {
+      filteredRepos.forEach((repo) => {
         const extra = enriched.get(repo.fullName)
         if (extra) {
           repo.openPRs = extra.openPRs
           repo.languageColor = extra.languageColor
         }
+      })
+    } catch {
+      // GraphQL enrichment failed, continue with REST data
+    }
+
+    try {
+      const intelligence = await enrichWithIntelligence(filteredRepos)
+      const reposWithIntelligence: RepositoryWithIntelligence[] = filteredRepos.map((repo) => ({
+        ...repo,
+        growth: intelligence.get(repo.fullName),
+      }))
+
+      let developerEnrichmentMap = new Map<string, GraphQLRepositoryEnrichment>()
+      if (options.developerFilters && options.developerFilters.length > 0) {
+        try {
+          developerEnrichmentMap = await enrichWithDeveloperData(fullNames)
+        } catch {
+          // Developer data enrichment failed, continue without it
+        }
+      }
+
+      let finalRepos = reposWithIntelligence
+      if (options.developerFilters && options.developerFilters.length > 0) {
+        const developerFilters = options.developerFilters as DeveloperFilter[]
+        finalRepos = reposWithIntelligence.filter((repo) => {
+          const enrichment = developerEnrichmentMap.get(repo.fullName)
+          return developerFilters.some((filter) => {
+            const result = evaluateDeveloperFilter(filter, repo, enrichment)
+            return result.matches
+          })
+        })
+      }
+
+      return { repos: finalRepos, totalCount: finalRepos.length, rateLimit }
+    } catch {
+      // Intelligence enrichment failed, return without growth data
+    }
+  }
+
+  return { repos: filteredRepos, totalCount: filteredRepos.length, rateLimit }
+}
       })
     } catch {
       // GraphQL enrichment failed, continue with REST data

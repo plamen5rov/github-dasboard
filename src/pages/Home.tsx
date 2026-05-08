@@ -4,6 +4,7 @@ import { useFilters } from '../hooks/useFilters'
 import { useSort } from '../hooks/useSort'
 import { useRepos } from '../hooks/useRepos'
 import { useTheme } from '../hooks/useTheme'
+import { usePersonalization } from '../hooks/usePersonalization'
 import { TIME_RANGES, SORT_OPTIONS, COMMON_LICENSES } from '../lib/constants'
 import type { TimeRange } from '../lib/constants'
 import type { SortState } from '../hooks/useSort'
@@ -13,14 +14,23 @@ import RepoGrid from '../components/RepoGrid'
 import { formatNumber } from '../lib/utils'
 import LicenseLegend from '../components/LicenseLegend'
 import DeveloperFilterBar from '../components/DeveloperFilterBar'
+import CollectionsPanel from '../components/CollectionsPanel'
+import FollowedTopicsManager from '../components/FollowedTopicsManager'
+import IgnoreListManager from '../components/IgnoreListManager'
+import TrendAlerts from '../components/TrendAlerts'
 
 function Home() {
   const { filters, updateFilters, resetFilters, activeFilterCount } = useFilters()
   const { sort, setSort, toggleOrder } = useSort()
   const { theme, toggleTheme } = useTheme()
+  const { unreadAlertCount } = usePersonalization()
   const [showLanguagePicker, setShowLanguagePicker] = useState(false)
   const [topicInput, setTopicInput] = useState('')
   const langPickerRef = useRef<HTMLDivElement>(null)
+  const [showCollections, setShowCollections] = useState(false)
+  const [showFollowedTopics, setShowFollowedTopics] = useState(false)
+  const [showIgnoreList, setShowIgnoreList] = useState(false)
+  const [showAlerts, setShowAlerts] = useState(false)
 
   const POPULAR_LANGUAGES = [
     'TypeScript', 'JavaScript', 'Python', 'Rust', 'Go',
@@ -112,9 +122,9 @@ function Home() {
             </svg>
             <h1 className="text-xl font-bold text-github-text">GitHub Dashboard</h1>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             {rateLimit && (
-              <span className="text-xs text-github-muted hidden sm:inline">
+              <span className="text-xs text-github-muted hidden lg:inline">
                 {rateLimit.remaining > 0 ? (
                   <>API: {formatNumber(rateLimit.remaining)} remaining</>
                 ) : (
@@ -122,6 +132,50 @@ function Home() {
                 )}
               </span>
             )}
+            <button
+              onClick={() => setShowAlerts(true)}
+              className="relative p-2 text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent rounded-lg"
+              aria-label="Trend alerts"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              {unreadAlertCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-github-accent rounded-full text-white text-xs flex items-center justify-center font-medium">
+                  {unreadAlertCount > 9 ? '9+' : unreadAlertCount}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setShowCollections(true)}
+              className="p-2 text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent rounded-lg hidden sm:block"
+              aria-label="Collections"
+              title="Collections"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowFollowedTopics(true)}
+              className="p-2 text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent rounded-lg hidden sm:block"
+              aria-label="Followed topics"
+              title="Followed topics"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowIgnoreList(true)}
+              className="p-2 text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent rounded-lg hidden sm:block"
+              aria-label="Ignore list"
+              title="Ignore list"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+              </svg>
+            </button>
             <button
               onClick={toggleTheme}
               className="p-2 text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent rounded-lg"
@@ -380,6 +434,11 @@ function Home() {
           activeDeveloperFilters={filters.developerFilters}
         />
       </main>
+
+      <CollectionsPanel isOpen={showCollections} onClose={() => setShowCollections(false)} />
+      <FollowedTopicsManager isOpen={showFollowedTopics} onClose={() => setShowFollowedTopics(false)} />
+      <IgnoreListManager isOpen={showIgnoreList} onClose={() => setShowIgnoreList(false)} />
+      <TrendAlerts isOpen={showAlerts} onClose={() => setShowAlerts(false)} />
     </div>
   )
 }

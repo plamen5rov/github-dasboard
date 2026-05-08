@@ -5,6 +5,7 @@ import RepositoryInsight from './RepositoryInsight'
 import { formatNumber, formatRelativeTime } from '../lib/utils'
 import { evaluateDeveloperFilter } from '../lib/developerFilters'
 import type { DeveloperFilter } from '../hooks/useFilters'
+import { usePersonalization } from '../hooks/usePersonalization'
 
 interface RepoCardProps {
   repo: RepositoryWithIntelligence
@@ -13,6 +14,9 @@ interface RepoCardProps {
 }
 
 function RepoCard({ repo, onTopicClick, activeDeveloperFilters = [] }: RepoCardProps) {
+  const { toggleBookmark, isBookmarked } = usePersonalization()
+  const bookmarked = isBookmarked(repo.fullName)
+
   const developerBadges = activeDeveloperFilters
     .map((filter) => evaluateDeveloperFilter(filter, repo))
     .filter((result) => result.badge)
@@ -26,15 +30,31 @@ function RepoCard({ repo, onTopicClick, activeDeveloperFilters = [] }: RepoCardP
           className="w-10 h-10 rounded-full flex-shrink-0"
           loading="lazy"
         />
-        <div className="min-w-0">
-          <a
-            href={repo.htmlUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-lg font-semibold text-github-accent hover:underline truncate block"
-          >
-            {repo.fullName}
-          </a>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <a
+              href={repo.htmlUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg font-semibold text-github-accent hover:underline truncate block"
+            >
+              {repo.fullName}
+            </a>
+            <button
+              onClick={() => toggleBookmark(repo.fullName)}
+              className={`flex-shrink-0 p-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-github-accent ${
+                bookmarked
+                  ? 'text-yellow-400 hover:text-yellow-300'
+                  : 'text-github-muted hover:text-github-text'
+              }`}
+              aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark this repo'}
+              title={bookmarked ? 'Bookmarked' : 'Bookmark'}
+            >
+              <svg className="w-5 h-5" fill={bookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+              </svg>
+            </button>
+          </div>
           {repo.description && (
             <p className="text-sm text-github-muted line-clamp-2 mt-1">
               {repo.description}

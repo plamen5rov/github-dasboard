@@ -141,3 +141,51 @@ export interface GraphQLRepositoryEnrichment {
   hasTests: boolean
   dependencyCount: number
 }
+
+export interface Bookmark {
+  fullName: string
+  addedAt: string
+  note?: string
+}
+
+export interface Collection {
+  id: string
+  name: string
+  description?: string
+  repoFullNames: string[]
+  createdAt: string
+  updatedAt: string
+}
+
+export interface Watchlist {
+  id: string
+  name: string
+  topics: string[]
+  languages: string[]
+  minStars: number
+  maxStars: number
+  createdAt: string
+  lastChecked: string
+  newMatches: string[]
+}
+
+export interface TrendAlert {
+  id: string
+  type: 'bookmark_spike' | 'collection_trending' | 'watchlist_match' | 'followed_topic_hot'
+  title: string
+  message: string
+  repoFullName?: string
+  timestamp: string
+  read: boolean
+}
+
+export interface UserPreferences {
+  followedTopics: string[]
+  ignoredTopics: string[]
+  ignoredLanguages: string[]
+  bookmarks: Bookmark[]
+  collections: Collection[]
+  watchlists: Watchlist[]
+  alerts: TrendAlert[]
+  alertThreshold: number
+}
