@@ -1,5 +1,16 @@
 # DONE.md — Changelog
 
+## Phase 9: Responsive Layout Adjustments and Final Polish
+- [2025-05-07] Stacked time range and sort controls vertically on mobile (`sm:flex-row`)
+- [2025-05-07] Shortened checkbox labels on small screens (Archived/Forks) with full labels on desktop
+- [2025-05-07] Reduced input widths and padding on mobile for compact viewports
+- [2025-05-07] Adjusted spacing between rows for better mobile readability
+
+## Phase 8: Combined Filter/Sort Panel
+- [2025-05-07] Merged FilterBar and SortControls into a single full-width panel in Home page
+- [2025-05-07] Removed separate FilterBar and SortControls component imports from Home page
+- [2025-05-07] Applied consistent gap and padding across the combined panel
+
 ## Phase 7: Testing
 - [2025-05-07] Added vitest test script to package.json
 - [2025-05-07] Created MSW handlers for mocking GitHub REST + GraphQL API responses
