@@ -165,13 +165,18 @@ function Home() {
             </button>
             <button
               onClick={() => setShowFollowedTopics(true)}
-              className="p-2 text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent rounded-lg hidden sm:block"
+              className="relative p-2 text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent rounded-lg hidden sm:block"
               aria-label="Followed topics"
               title="Followed topics"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg>
+              {prefs.followedTopics.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full text-white text-xs flex items-center justify-center font-medium">
+                  {prefs.followedTopics.length > 9 ? '9+' : prefs.followedTopics.length}
+                </span>
+              )}
             </button>
             <button
               onClick={() => setShowIgnoreList(true)}
