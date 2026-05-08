@@ -423,6 +423,12 @@ export async function fetchReposWithIntelligence(
       )
       if (hasIgnoredTopic) return false
     }
+    if (options.licenseType === 'no_license') {
+      if (repo.license !== null) return false
+    }
+    if (options.licenseType === 'open_source') {
+      if (repo.license === null) return false
+    }
     return true
   })
 

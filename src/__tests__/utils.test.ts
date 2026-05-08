@@ -119,12 +119,12 @@ describe('buildGitHubQuery', () => {
 
   it('builds open source license query', () => {
     const query = buildGitHubQuery({ timeRange: 'week', licenseType: 'open_source' })
-    expect(query).toContain('(license:mit')
+    expect(query).not.toContain('license:')
   })
 
   it('builds no license query', () => {
     const query = buildGitHubQuery({ timeRange: 'week', licenseType: 'no_license' })
-    expect(query).toContain('license:null')
+    expect(query).not.toContain('license:')
   })
 
   it('builds specific license query', () => {

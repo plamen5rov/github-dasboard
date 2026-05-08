@@ -56,36 +56,8 @@ export function buildGitHubQuery(options: BuildQueryOptions): string {
   }
 
   if (options.licenseType && options.licenseType !== 'all') {
-    if (options.licenseType === 'open_source') {
-      const licenses = [
-        'license:mit',
-        'license:apache-2.0',
-        'license:bsd-2-clause',
-        'license:bsd-3-clause',
-        'license:gpl-2.0',
-        'license:gpl-3.0',
-        'license:lgpl-2.1',
-        'license:lgpl-3.0',
-        'license:isc',
-        'license:unlicense',
-        'license:mpl-2.0',
-        'license:agpl-3.0',
-        'license:epl-2.0',
-        'license:epl-1.0',
-        'license:cc0-1.0',
-        'license:bsl-1.0',
-        'license:zlib',
-        'license:artistic-2.0',
-        'license:ofl-1.1',
-        'license:0bsd',
-        'license:wtfpl',
-        'license:blueoak-1.0.0',
-        'license:eupl-1.1',
-        'license:eupl-1.2',
-      ]
-      parts.push(`(${licenses.join(' ')})`)
-    } else if (options.licenseType === 'no_license') {
-      parts.push('license:null')
+    if (options.licenseType === 'open_source' || options.licenseType === 'no_license') {
+      // no valid API qualifier for these; handled client-side after fetch
     } else {
       parts.push(`license:${options.licenseType.toLowerCase()}`)
     }
