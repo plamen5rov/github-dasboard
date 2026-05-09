@@ -33,7 +33,7 @@ Discover repositories updated in the last **24 hours**, **7 days**, or
 - ♾️ Infinite scroll pagination via `IntersectionObserver`
 - 📱 Fully responsive: 1 column (mobile), 2 columns (tablet), 3 columns (desktop)
 
-### Sorting ✨
+### ✨ Sorting
 
 | Sort                     | Description                         |
 |--------------------------|-------------------------------------|

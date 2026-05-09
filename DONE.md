@@ -81,6 +81,7 @@
 - [2026-05-09] Added LICENSE, CONTRIBUTING.md, SECURITY.md for GitHub repo tabs (files modified: all new)
 - [2026-05-09] Added "Support This Project" section and star history chart to README (files modified: README.md)
 - [2026-05-09] Added emoji icons to all feature section headings in README (files modified: README.md)
+- [2026-05-09] Moved Sorting icon to front for consistency with other headings (files modified: README.md)
 
 ## Phase 26: GitHub Primer Colors & AGENTS.md Cleanup
 - [2026-05-08] Aligned Tailwind color tokens with GitHub Primer design system — fixed `darker`, `purple`, `light-border`, `light-muted`; added `link`, `open`, `closed`, `attention` tokens (files modified: tailwind.config.js)
