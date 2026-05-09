@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useFilters } from '../hooks/useFilters'
-import { useSort } from '../hooks/useSort'
-import { TIME_RANGES, SORT_OPTIONS, COMMON_LICENSES, DEVELOPER_FILTERS } from '../lib/constants'
+import { TIME_RANGES, COMMON_LICENSES, DEVELOPER_FILTERS } from '../lib/constants'
 import type { TimeRange } from '../lib/constants'
-import type { SortState } from '../hooks/useSort'
 import type { DeveloperFilter } from '../hooks/useFilters'
 import SearchInput from './SearchInput'
 import LicenseLegend from './LicenseLegend'
@@ -16,7 +14,6 @@ interface FilterSidebarProps {
 
 function FilterSidebar({ isOpen, onClose }: FilterSidebarProps) {
   const { filters, updateFilters, resetFilters, activeFilterCount } = useFilters()
-  const { sort, setSort, toggleOrder } = useSort()
   const [showLanguagePicker, setShowLanguagePicker] = useState(false)
   const [topicInput, setTopicInput] = useState('')
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
@@ -164,45 +161,6 @@ function FilterSidebar({ isOpen, onClose }: FilterSidebarProps) {
             )}
           </div>
 
-          {/* Sort */}
-          <div className="border-b border-github-border pb-3">
-            <SectionHeader title="Sort" section="sort" />
-            {!collapsedSections.sort && (
-              <div className="flex items-center gap-2 mt-2">
-                <label htmlFor="sort-select" className="sr-only">Sort by</label>
-                <select
-                  id="sort-select"
-                  value={sort.field}
-                  onChange={(e) => setSort({ field: e.target.value as SortState['field'] })}
-                  className="flex-1 px-2 py-1.5 bg-github-dark border border-github-border rounded-lg text-sm text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent cursor-pointer"
-                  aria-label="Sort repositories by"
-                >
-                  {SORT_OPTIONS.map((option) => (
-                    <option key={option.field} value={option.field}>
-                      {option.icon} {option.label}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  onClick={toggleOrder}
-                  className="p-1.5 bg-github-dark border border-github-border rounded-lg text-github-muted hover:text-github-text focus:outline-none focus:ring-2 focus:ring-github-accent"
-                  aria-label={`Switch to ${sort.order === 'asc' ? 'descending' : 'ascending'} order`}
-                  title={sort.order === 'asc' ? 'Ascending' : 'Descending'}
-                >
-                  {sort.order === 'asc' ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                    </svg>
-                  ) : (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-
           {/* Language */}
           <div className="border-b border-github-border pb-3">
             <SectionHeader title={`Language${filters.language.length > 0 ? ` (${filters.language.length})` : ''}`} section="language" />
@@ -254,23 +212,6 @@ function FilterSidebar({ isOpen, onClose }: FilterSidebarProps) {
                     ))}
                   </optgroup>
                 </select>
-              </div>
-            )}
-          </div>
-
-          {/* Min Stars */}
-          <div className="border-b border-github-border pb-3">
-            <SectionHeader title="Min Stars" section="stars" />
-            {!collapsedSections.stars && (
-              <div className="mt-2">
-                <input
-                  type="number"
-                  min={0}
-                  value={filters.minStars || ''}
-                  onChange={(e) => updateFilters({ minStars: parseInt(e.target.value) || 0 })}
-                  className="w-full px-2 py-1.5 bg-github-dark border border-github-border rounded-lg text-sm text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent"
-                  placeholder="0"
-                />
               </div>
             )}
           </div>

@@ -192,7 +192,7 @@ function Home() {
 
         <main className="flex-1 min-w-0 px-4 py-6 lg:pl-6">
           {/* Sort bar */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-wrap items-center gap-2 mb-4">
             <div className="flex items-center gap-2">
               <label htmlFor="sort-select-main" className="sr-only">Sort by</label>
               <select
@@ -224,6 +224,17 @@ function Home() {
                   </svg>
                 )}
               </button>
+              <div className="w-px h-6 bg-github-border" />
+              <label htmlFor="min-stars" className="text-sm text-github-muted">Min ⭐</label>
+              <input
+                id="min-stars"
+                type="number"
+                min={0}
+                value={filters.minStars || ''}
+                onChange={(e) => updateFilters({ minStars: parseInt(e.target.value) || 0 })}
+                className="w-20 px-2 py-1.5 bg-github-darker border border-github-border rounded-lg text-sm text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent"
+                placeholder="0"
+              />
             </div>
             {activeFilterCount > 0 && (
               <button
