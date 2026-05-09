@@ -2,7 +2,7 @@
 
 # GitHub Dashboard
 
-Stop hunting for cool repos. Start discovering them.
+## Stop hunting for cool repos. Start discovering them.
 
 Filter GitHub's trending landscape by language, license, stars, topics, and more. Bookmark gems, organize collections, ignore noise. All client-side — your data stays yours.
 
@@ -44,13 +44,12 @@ Discover repositories updated in the last **24 hours**, **7 days**, or
 | Filter          | How it works                                          |
 |-----------------|-------------------------------------------------------|
 | **Language**    | Multi-select from curated list, maps to API query     |
-| **License**     | Dropdown: MIT, Apache-2.0, GPL-3.0, BSD, etc.         |
-| **Open Source** | Toggle: All / Open Source Only / No License           |
+| **License**     | Dropdown: All, Open Source Only, No License, or specific (MIT, Apache-2.0, GPL-3.0, etc.) |
 | **Topic tags**  | Free-text chip input → `topic:<tag>` in query         |
-| **Stars range** | Minimum stars slider                                  |
-| **Archived**    | Toggle to show/hide (hidden by default)               |
-| **Forks**       | Toggle to show/hide (hidden by default)               |
-| **README Lang** | Toggle: All Languages / English Only (client-side detection, requires PAT) |
+| **Min Stars**   | Number input in sort bar — filter by minimum star count |
+| **Archived**    | Show/hide archived repos (hidden by default)          |
+| **Forks**       | Show/hide forked repos (hidden by default)            |
+| **README Lang** | All Languages / English Only (client-side detection, requires PAT) |
 
 ### Developer-Centric Filters
 
@@ -84,6 +83,7 @@ All data stored in `localStorage` — no backend required.
 
 - 🌙 **Dark mode by default** with light toggle (persisted, respects
   system preference)
+- 🗂️ **Collapsible sidebar** with all filters — hamburger menu on mobile, sticky on desktop
 - ⌨️ Full keyboard navigation and ARIA labels
 - 💀 Skeleton loading states (never a blank screen)
 - ⚠️ Error states with retry buttons and rate-limit countdowns
@@ -114,9 +114,7 @@ src/
 ├── components/
 │   ├── RepoCard.tsx               # Individual repo display card
 │   ├── RepoGrid.tsx               # Grid layout with infinite scroll
-│   ├── FilterBar.tsx              # Standard filters
-│   ├── DeveloperFilterBar.tsx     # 10 developer chip toggles
-│   ├── SortControls.tsx           # Sort field + order controls
+│   ├── FilterSidebar.tsx          # Collapsible sidebar with all filters
 │   ├── SearchInput.tsx            # Debounced keyword search
 │   ├── LanguageBadge.tsx          # Color-coded language indicator
 │   ├── LicenseBadge.tsx           # Open source / proprietary badge
