@@ -20,7 +20,7 @@ Filter GitHub's trending landscape by language, license, stars, topics, and more
 
 ## Features
 
-### Trending Feed
+### 📈 Trending Feed
 
 Discover repositories updated in the last **24 hours**, **7 days**, or
 **30 days** sorted by stars — no GitHub trending page needed.
@@ -44,7 +44,7 @@ Discover repositories updated in the last **24 hours**, **7 days**, or
 | 🕐 **Recently Updated**   | Last push date descending           |
 | ✨ **Best Match**         | GitHub relevance ranking            |
 
-### Filters
+### 🔍 Filters
 
 | Filter          | How it works                                          |
 |-----------------|-------------------------------------------------------|
@@ -56,7 +56,7 @@ Discover repositories updated in the last **24 hours**, **7 days**, or
 | **Forks**       | Show/hide forked repos (hidden by default)            |
 | **README Lang** | All Languages / English Only (client-side detection, requires PAT) |
 
-### Developer-Centric Filters
+### 🧠 Developer-Centric Filters
 
 Ten purpose-built filters applied client-side for detection that
 GitHub search qualifiers can't express:
@@ -74,7 +74,7 @@ GitHub search qualifiers can't express:
 | **Low Competition**   | 💎   | Undiscovered gems with quality signals       |
 | **Enterprise**        | 🏢   | Large-scale, cloud-native, infrastructure    |
 
-### Personalization
+### 👤 Personalization
 
 All data stored in `localStorage` — no backend required.
 
@@ -84,7 +84,7 @@ All data stored in `localStorage` — no backend required.
 - 🚫 **Ignore List** — hide repos matching unwanted topics/languages
 - 🔗 **Shareable URLs** — every filter/sort combo is uniquely bookmarkable
 
-### UI & Accessibility
+### 🎨 UI & Accessibility
 
 - 🌙 **Dark mode by default** with light toggle (persisted, respects
   system preference)
