@@ -447,7 +447,7 @@ function Home() {
               onChange={(e) => setTopicInput(e.target.value)}
               onKeyDown={handleTopicAdd}
               placeholder="Add topic (Enter)"
-              className="px-2 py-1.5 sm:px-3 sm:py-2 bg-github-border border-0 rounded-lg text-sm sm:text-base font-medium text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent w-28 sm:w-32"
+              className="px-2 py-1.5 sm:px-3 sm:py-2 bg-github-border border-0 rounded-lg text-sm sm:text-base font-medium text-github-text placeholder-github-muted focus:outline-none focus:ring-2 focus:ring-github-accent w-36 sm:w-48"
               aria-label="Add topic filter"
             />
           </div>
