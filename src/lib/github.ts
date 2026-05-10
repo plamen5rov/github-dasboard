@@ -321,6 +321,21 @@ export async function fetchRepoByFullName(fullName: string): Promise<RepositoryW
   return { ...repo }
 }
 
+export async function fetchCoreRateLimit(): Promise<RateLimitInfo | null> {
+  try {
+    const response = await fetch(`${GITHUB_API_BASE}/rate_limit`, { headers: getHeaders() })
+    if (!response.ok) return null
+    const data = await response.json()
+    return {
+      limit: data.resources.core.limit,
+      remaining: data.resources.core.remaining,
+      reset: data.resources.core.reset,
+    }
+  } catch {
+    return null
+  }
+}
+
 export async function fetchReposWithIntelligence(
   options: BuildQueryOptions,
   sort: SortField,

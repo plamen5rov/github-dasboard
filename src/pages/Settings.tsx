@@ -60,7 +60,8 @@ function Settings() {
         <section className="p-6 bg-github-darker border border-github-border rounded-xl space-y-4">
           <h2 className="text-lg font-semibold text-github-text">GitHub Personal Access Token</h2>
           <p className="text-sm text-github-muted">
-            Add a PAT to increase your API rate limit from 60 to 5,000 requests per hour.
+            Add a PAT to increase your API rate limit from 60 to 5,000 requests per hour
+            (Core API), and from 10 to 30 requests per minute (Search API).
             Generate one at{' '}
             <a
               href="https://github.com/settings/tokens"

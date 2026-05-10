@@ -202,7 +202,8 @@ The app uses both **REST** (search) and **GraphQL** (enrichment) APIs. Most feat
 
 | Without PAT                          | With PAT                                          |
 |--------------------------------------|---------------------------------------------------|
-| 60 requests/hour                     | 5,000 requests/hour                               |
+| 60 requests/hour (Core API)          | 5,000 requests/hour (Core API)                   |
+| 10 requests/minute (Search API)      | 30 requests/minute (Search API)                  |
 | Basic search results only            | Enriched repo data (PR/issue counts, languages)  |
 | No README language detection         | English README detection enabled                  |
 

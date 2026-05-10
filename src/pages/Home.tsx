@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { useFilters } from '../hooks/useFilters'
 import { useSort } from '../hooks/useSort'
 import { useRepos } from '../hooks/useRepos'
 import { useTheme } from '../hooks/useTheme'
 import { usePersonalization } from '../hooks/usePersonalization'
 import { SORT_OPTIONS } from '../lib/constants'
+import { fetchCoreRateLimit } from '../lib/github'
 import type { SortState } from '../hooks/useSort'
 import RepoGrid from '../components/RepoGrid'
 import { formatNumber } from '../lib/utils'
@@ -51,6 +53,15 @@ function Home() {
     order: sort.order,
   })
 
+  const { data: coreRateLimit } = useQuery({
+    queryKey: ['coreRateLimit'],
+    queryFn: fetchCoreRateLimit,
+    staleTime: 60_000,
+    retry: false,
+  })
+
+  const displayRateLimit = coreRateLimit || rateLimit
+
   const handleTopicClick = (topic: string) => {
     if (!filters.topics.includes(topic)) {
       updateFilters({ topics: [...filters.topics, topic] })
@@ -85,11 +96,11 @@ function Home() {
             </Link>
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
-            {rateLimit && (
+            {displayRateLimit && (
               <span className="text-sm hidden lg:inline">
-                {rateLimit.remaining > 0 ? (
-                  <span className={rateLimit.remaining <= 10 ? 'text-red-400' : ''}>
-                    API: {formatNumber(rateLimit.remaining)} remaining
+                {displayRateLimit.remaining > 0 ? (
+                  <span className={displayRateLimit.remaining <= 100 ? 'text-red-400' : ''}>
+                    API: {formatNumber(displayRateLimit.remaining)} remaining
                   </span>
                 ) : (
                   <span className="text-red-400">Rate limit exceeded</span>
