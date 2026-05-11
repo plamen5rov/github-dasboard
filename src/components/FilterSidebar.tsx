@@ -14,7 +14,7 @@ interface FilterSidebarProps {
 
 function FilterSidebar({ isOpen, onClose }: FilterSidebarProps) {
   const { filters, updateFilters, resetFilters, activeFilterCount } = useFilters()
-  const [showLanguagePicker, setShowLanguagePicker] = useState(false)
+  const [_showLanguagePicker, setShowLanguagePicker] = useState(false)
   const [topicInput, setTopicInput] = useState('')
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
     time: false,
